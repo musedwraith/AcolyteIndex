@@ -1,0 +1,29 @@
+body {
+  background-color: #1c1127; /* deep space purple */
+  color: #f1d1ff; /* soft lavender text */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+select, .hero-card {
+  background-color: #2e1a3f; /* rich violet */
+  color: #f1d1ff;
+  border: 1px solid #c184ff; /* soft glowing pink border */
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #a15eff; /* soft glow */
+}
+
+h1, h2 {
+  color: #e8aaff; /* bright accent pink-purple */
+  text-shadow: 0 0 6px #a15eff;
+}
+
+select {
+  appearance: auto; /* Ensure dropdown arrow shows */
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
+}

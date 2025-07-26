@@ -33,5 +33,13 @@ Acolyte Index is a React-based Dota 2 hero tracker designed with a dark, etherea
 
 ## Future Enhancements
 - Add **glowing and pulsing hover effects** for dropdown and hero cards.
-- Deploy for live sharing.
+- Deploy for live sharing. (Netlify?)
 - Implement **“Mark for Ritual” tracking** so users can mark heroes they’re practicing and add personal notes.
+- Add more stats: win rate, pick rate, ban rate, KDA (by patch).
+- Add meta data: roles, builds, counters.
+- Change dropdown to list on the left side, and populate information on the right side.
+- Void version: win rate, pick rate, hero role, basic statas.
+- Filter by rank.
+- Meta teir list based on OpenDota win rates for each patch.
+- Track my own Dota matches (so I can see how bad I actually play xd).
+- Add a streamer overlay to show the pool live.

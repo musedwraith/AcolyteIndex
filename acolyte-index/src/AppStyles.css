@@ -1,29 +1,296 @@
 body {
-  background-color: #1c1127; /* deep space purple */
-  color: #f1d1ff; /* soft lavender text */
+  background-color: #1c1127;
+  color: #f1d1ff;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-select, .hero-card {
-  background-color: #2e1a3f; /* rich violet */
-  color: #f1d1ff;
-  border: 1px solid #c184ff; /* soft glowing pink border */
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0 0 12px #a15eff; /* soft glow */
+.app-wrapper {
+  position: relative;
+  background-color: #1c1127;
+  min-height: 100vh;
+  padding-top: 60px;
 }
 
-h1, h2 {
-  color: #e8aaff; /* bright accent pink-purple */
+/* Title in top-left */
+.app-title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #e8aaff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 6px #a15eff;
+  z-index: 10;
+}
+
+/* Outer grid: Hero List (left) + Right Section */
+.page-container {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Left column fixed, right column flexible */
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  align-items: start;
+}
+
+/* Sidebar - Hero List */
+.hero-list {
+  background-color: #2e1a3f;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #a15eff;
+  overflow-y: auto;
+  max-height: 100vh;
+
+  /* Center everything inside */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Remove bullet points and fix list alignment */
+.hero-list ul {
+  list-style: none;   /* No bullets */
+  margin: 0;          /* Reset spacing */
+  padding: 0;         /* Reset spacing */
+  width: 100%;        /* Full width inside the sidebar */
+}
+
+.hero-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  margin: 4px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  text-align: left;   /* Make sure text aligns properly */
+  width: 100%;        /* So hover and active states span fully */
+}
+
+.hero-list h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #e8aaff;
   text-shadow: 0 0 6px #a15eff;
 }
 
-select {
-  appearance: auto; /* Ensure dropdown arrow shows */
+.hero-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.hero-list-header {
+  position: sticky;
+  top: 0;
+  background-color: #2e1a3f;
+  z-index: 5;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #a15eff55; /* subtle divider line */
+}
+
+.hero-list-header h2 {
+  text-align: center;
+  margin: 0 0 8px 0;
+  color: #e8aaff;
+  text-shadow: 0 0 6px #a15eff;
+}
+
+.hero-list li.active img {
+  animation: pulseGlow 3s infinite ease-in-out;
+  border-radius: 6px;
+}
+
+.hero-list li.active {
+  background-color: #a15eff;
+  color: #1c1127;
+  font-weight: bold;
+}
+
+/* Right Section layout */
+.right-section {
+  display: grid;
+  grid-template-rows: auto 1fr; /* Top row (Player Search), bottom row (2 cards) */
+  gap: 20px;
+}
+
+/* Search bar styling */
+.search-box {
+  width: 80%;  /* Slightly narrower to center */
+  padding: 6px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #c184ff;
+  background-color: #1c1127;
+  color: #f1d1ff;
+  text-align: center;
+}
+
+.role-filters {
+  display: grid;
+  grid-template-columns: repeat(2, auto); /* Two columns */
+  gap: 8px 30px; /* Space between rows and columns */
+  justify-content: center; /* Center the whole grid */
+  margin-bottom: 15px;
+  color: #f1d1ff;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.role-filters label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   cursor: pointer;
-  z-index: 10;
-  position: relative;
+}
+
+
+.role-filters input[type="checkbox"] {
+  accent-color: #a15eff;
+}
+
+/* Player Search (top row) */
+.player-section {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2e1a3f;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #a15eff;
+}
+
+.player-search-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.player-section input {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #c184ff;
+  background-color: #1c1127;
+  color: #f1d1ff;
+}
+
+.player-section button {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background-color: #a15eff;
+  color: #1c1127;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.player-section button:hover {
+  background-color: #c184ff;
+}
+
+/* Bottom row: Hero card + Player card */
+.bottom-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch; /* Make both boxes stretch evenly */
+}
+
+/* Cards: Hero & Player share identical style */
+.hero-details,
+.player-info-wrapper {
+  flex: 1; /* Take equal space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #1a0f24;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #a15eff;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: auto; /* Remove hardcoded height */
+}
+
+/* Images (Hero + Player) */
+.hero-large,
+.player-info-wrapper img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  animation: pulseGlow 3s infinite ease-in-out;
+  margin-bottom: 20px;
+}
+
+.hero-details hr {
+  border: none;
+  border-top: 1px solid #a15eff55; /* Soft purple line */
+  margin: 10px 0 15px 0; /* Some spacing around */
+  width: 80%; /* Make it shorter for style */
+}
+
+.divider {
+  width: 100%; /* Force it to span the card */
+  height: 1px;
+  background-color: #a15eff55; /* Soft purple line */
+  border: none;
+  margin: 15px 0;
+  display: block;
+}
+
+/* Titles */
+.hero-details h2,
+.player-info-wrapper h3 {
+  font-size: 1.6rem;
+  color: #e8aaff;
+  font-weight: bold;
+  text-shadow: 0 0 6px #a15eff;
+  margin-bottom: 10px;
+}
+
+/* Glow animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px #a15eff, 0 0 20px #a15eff;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px #e8aaff, 0 0 45px #a15eff;
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 10px #a15eff, 0 0 20px #a15eff;
+    transform: scale(1);
+  }
+}
+
+/* Player Stats Section */
+.player-hero-stats {
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #a15eff55;
+  color: #f1d1ff;
+}
+
+.player-hero-stats h4 {
+  color: #e8aaff;
+  margin-bottom: 12px;
+  text-shadow: 0 0 6px #a15eff;
+  font-size: 1.2em;
 }

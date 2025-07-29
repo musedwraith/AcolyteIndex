@@ -27,19 +27,22 @@ Acolyte Index is a React-based Dota 2 hero tracker designed with a dark, etherea
 - **public/index.html** – Root HTML file for React mounting.
 
 ## Current Functionality
-1. Browse Dota 2 heroes in a themed dropdown.
-2. Select a hero to display stats dynamically.
-3. Clean, glowing theme aligned with "wraith" branding.
+1. Browse Dota 2 heroes in alphabetical order in a scrollable list on the left side, and the stat information is populated the on the right side. 
+2. The right side features a field to search for player Steam32 IDs on the top and larger hero portrait with basic stat information centered on the bottom.
+3. Select a hero to display stats dynamically.
+4. Clean, glowing theme aligned with "wraith" branding.
+5. Glowing and pulsing effects for dropdown and hero cards.
+6. Added more stats: win rate, pick rate, and ban rate. For KDA, it uses a basic formula to approximate a dynamic KDA number since OpenDota doesn't provide direct kills/deaths. Added information of which patch the KDA comes from.
 
 ## Future Enhancements
-- Add **glowing and pulsing hover effects** for dropdown and hero cards.
 - Deploy for live sharing. (Netlify?)
 - Implement **“Mark for Ritual” tracking** so users can mark heroes they’re practicing and add personal notes.
-- Add more stats: win rate, pick rate, ban rate, KDA (by patch).
 - Add meta data: roles, builds, counters.
-- Change dropdown to list on the left side, and populate information on the right side.
 - Void version: win rate, pick rate, hero role, basic statas.
 - Filter by rank.
 - Meta teir list based on OpenDota win rates for each patch.
 - Track my own Dota matches (so I can see how bad I actually play xd).
 - Add a streamer overlay to show the pool live.
+- Make the list searchable/filterable by roles and name
+- Build paths, starting items, overlay OverWolf DotaPlus app
+- Recordings like OverWolf Outplayed

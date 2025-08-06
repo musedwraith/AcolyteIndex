@@ -3,17 +3,21 @@ Acolyte Index is a React-based Dota 2 hero tracker designed with a dark, etherea
 
 ## Project Setup
 1. Clone the repository:
-   ```git clone https://github.com/musedwraith/AcolyteIndex
+   ```
+   git clone https://github.com/musedwraith/AcolyteIndex
    cd AcolyteIndex
    ```
 2. Install dependencies:
-   ```npm install
+   ```
+   npm install
    ```
 3. Run the app in Electron to view the overlay (transparent background, always-on-top, frameless window):
-   ```npm run electron-start
+   ```
+   npm run electron-start
    ```
 4. Optionally, preview the app in a regular browser using:
-   ```npm start
+   ```
+   npm start
    ```
 5. Open your browser and navigate to:
    ```

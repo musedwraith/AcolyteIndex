@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./AppStyles.css";
 
 export default function App() {
@@ -10,12 +10,26 @@ export default function App() {
   const [playerData, setPlayerData] = useState(null);
   const [playerLoading, setPlayerLoading] = useState(false);
   const [patchHeroStats, setPatchHeroStats] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedRank, setSelectedRank] = useState("");
 
-  // Fetch heroes and patch
+  // Map of rank names to OpenDota API fields
+  const rankBrackets = {
+    Herald: 1,
+    Guardian: 2,
+    Crusader: 3,
+    Archon: 4,
+    Legend: 5,
+    Ancient: 6,
+    Divine: 7,
+    Immortal: 8,
+  };
+
+  // Fetch heroes and patch info
   useEffect(() => {
-    fetch("https://api.opendota.com/api/heroes")
+    fetch("https://api.opendota.com/api/heroStats")
       .then((res) => res.json())
       .then((data) => {
         const sortedHeroes = data.sort((a, b) =>
@@ -34,24 +48,42 @@ export default function App() {
   }, []);
 
   const handleRoleChange = (role) => {
-  setSelectedRoles((prev) =>
-    prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-  );
-};
+    setSelectedRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    );
+  };
 
-const filteredHeroes = heroes.filter((hero) => {
-  const matchesName = hero.localized_name
-    .toLowerCase()
-    .includes(searchTerm.toLowerCase());
+  const handleRankChange = (e) => {
+    setSelectedRank(e.target.value);
+  };
 
-  const matchesRole =
-    selectedRoles.length === 0 ||
-    (hero.roles && selectedRoles.every((role) => hero.roles.includes(role)));
+  // Filter + sort heroes (search, role, rank popularity)
+  const filteredHeroes = useMemo(() => {
+    return heroes
+      .filter((hero) => {
+        const matchesName = hero.localized_name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-  return matchesName && matchesRole;
-});
+        const matchesRole =
+          selectedRoles.length === 0 ||
+          (hero.roles && selectedRoles.every((role) => hero.roles.includes(role)));
 
-  // Fetch hero stats
+        let matchesRank = true;
+        if (selectedRank) {
+          const rankKey = `${rankBrackets[selectedRank]}_pick`;
+          matchesRank = hero[rankKey] && hero[rankKey] > 0;
+        }
+
+        return matchesName && matchesRole && matchesRank;
+      })
+      .sort((a, b) => {
+        if (!selectedRank) return a.localized_name.localeCompare(b.localized_name);
+        const key = `${rankBrackets[selectedRank]}_pick`;
+        return (b[key] || 0) - (a[key] || 0);
+      });
+  }, [heroes, searchTerm, selectedRoles, selectedRank]);
+
   const fetchHeroStats = async (heroId) => {
     setLoading(true);
     const res = await fetch("https://api.opendota.com/api/heroStats");
@@ -78,7 +110,6 @@ const filteredHeroes = heroes.filter((hero) => {
     setLoading(false);
   };
 
-  // Fetch player info and hero stats
   const fetchPlayerInfo = async () => {
     if (!playerId) return;
     setPlayerLoading(true);
@@ -108,7 +139,6 @@ const filteredHeroes = heroes.filter((hero) => {
     setPlayerLoading(false);
   };
 
-  // Fetch patch-specific hero stats
   const fetchPatchHeroStats = async (playerId, heroId) => {
     try {
       const matchesRes = await fetch(
@@ -144,11 +174,11 @@ const filteredHeroes = heroes.filter((hero) => {
       <div className="app-title">Acolyte Index</div>
 
       <div className="page-container">
-        {/* Left Column: Hero List */}
+        {/* Left Sidebar */}
         <div className="hero-list">
           <h2>Heroes</h2>
 
-          {/* Search Box */}
+          {/* Search */}
           <input
             type="text"
             className="search-box"
@@ -173,11 +203,41 @@ const filteredHeroes = heroes.filter((hero) => {
             )}
           </div>
 
-          {/* Filtered List */}
+          {/* Rank Filter */}
+          <div className="rank-filter-container">
+            <strong>Rank Filter</strong>
+            <select
+              className="rank-filter"
+              value={selectedRank}
+              onChange={handleRankChange}
+            >
+              <option value="">All Ranks</option>
+              {Object.keys(rankBrackets).map((rank) => (
+                <option key={rank} value={rank}>{rank}</option>
+              ))}
+            </select>
+            <div className="rank-description">
+              Sorted by pick rate (most picked first).
+            </div>
+          </div>
+
+          {/* Hero List */}
           <ul>
             {filteredHeroes.map((hero) => {
               const heroName = hero.name.replace("npc_dota_hero_", "");
               const imgUrl = `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${heroName}.png`;
+
+              // Calculate pick rate as % for selected rank
+              let pickRateText = "";
+              if (selectedRank) {
+                const pickKey = `${rankBrackets[selectedRank]}_pick`;
+                const totalKey = `${rankBrackets[selectedRank]}_pick`; // OpenDota heroStats doesn't give total per rank, so this is just raw
+                const totalPicks = heroes.reduce((sum, h) => sum + (h[pickKey] || 0), 0);
+                const rate =
+                  totalPicks > 0 ? ((hero[pickKey] || 0) / totalPicks) * 100 : 0;
+                pickRateText = ` — ${rate.toFixed(1)}% Pick Rate`;
+              }
+
               return (
                 <li
                   key={hero.id}
@@ -185,17 +245,15 @@ const filteredHeroes = heroes.filter((hero) => {
                   className={selectedHero?.id === hero.id ? "active" : ""}
                 >
                   <img src={imgUrl} alt={hero.localized_name} className="hero-icon" />
-                  <span>{hero.localized_name}</span>
+                  <span>{hero.localized_name}{pickRateText}</span>
                 </li>
               );
             })}
           </ul>
         </div>
 
-
-        {/* Right Section */}
+        {/* Right Side */}
         <div className="right-section">
-          {/* Player Search Row */}
           <div className="player-section">
             <h2>Player Lookup</h2>
             <div className="player-search-group">
@@ -210,9 +268,8 @@ const filteredHeroes = heroes.filter((hero) => {
             {playerLoading && <p>Fetching player data...</p>}
           </div>
 
-          {/* Bottom Row: Hero + Player Info */}
           <div className="bottom-row">
-            {/* Hero Card */}
+            {/* Hero Details */}
             <div className="hero-details">
               {loading && <p>Consulting the Ancients...</p>}
               {!loading && selectedHero && (
@@ -229,7 +286,6 @@ const filteredHeroes = heroes.filter((hero) => {
                   <small>Stats from Pro Matches (Patch {currentPatch || "Loading..."})</small>
                   <p>Roles: {selectedHero.roles?.join(", ")}</p>
 
-                  {/* Divider after Roles */}
                   <hr className="divider" />
 
                   <p>
@@ -250,14 +306,11 @@ const filteredHeroes = heroes.filter((hero) => {
               {!loading && !selectedHero && <p>Select a hero to see details.</p>}
             </div>
 
-            {/* Player Info Card */}
+            {/* Player Info */}
             <div className="player-info-wrapper">
               {playerData && (
                 <>
-                  <img
-                    src={playerData.profile?.avatarfull}
-                    alt="Player Avatar"
-                  />
+                  <img src={playerData.profile?.avatarfull} alt="Player Avatar" />
                   <h3>{playerData.profile?.personaname || "Unknown Player"}</h3>
                   <p>MMR Estimate: {playerData.mmr_estimate?.estimate || "N/A"}</p>
 
@@ -289,7 +342,6 @@ const filteredHeroes = heroes.filter((hero) => {
                               <p>Win Rate: {winrate}%</p>
                             </div>
 
-                            {/* Divider between All-Time and Patch */}
                             <hr className="divider" />
 
                             {patchHeroStats ? (

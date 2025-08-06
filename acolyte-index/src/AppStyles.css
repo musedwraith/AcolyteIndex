@@ -1,152 +1,124 @@
-body {
-  background-color: #1c1127;
-  color: #f1d1ff;
-  font-family: Arial, sans-serif;
+/* Make the entire window transparent for Electron overlay */
+html, body, #root {
+  background-color: transparent !important;
   margin: 0;
   padding: 0;
+  height: 100%;
+  width: 100%;
+  color: #f8eaff; /* Default text color */
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Floating overlay wrapper */
 .app-wrapper {
-  position: relative;
-  background-color: #1c1127;
-  min-height: 100vh;
-  padding-top: 60px;
+  background-color: rgba(47, 30, 50, 0.92); /* Slight transparency */
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 25px rgba(176, 91, 245, 0.6);
+  /* overflow: hidden; */
 }
 
-/* Title in top-left */
+/* Title (kept small for overlay) */
 .app-title {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: #e8aaff;
-  font-size: 2.5rem;
+  position: relative;
+  text-align: center;
+  color: #B05BF5;
+  font-size: 1.8em;
   font-weight: bold;
-  text-shadow: 0 0 6px #a15eff;
-  z-index: 10;
+  text-shadow: 0 0 8px #7E1469;
+  margin-bottom: 10px;
 }
 
-/* Outer grid: Hero List (left) + Right Section */
+/* Stack layout for hero list + right panel */
 .page-container {
-  display: grid;
-  grid-template-columns: 250px 1fr; /* Left column fixed, right column flexible */
-  gap: 20px;
-  padding: 20px;
-  min-height: 100vh;
-  align-items: start;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Sidebar - Hero List */
+/* Hero List (compact for overlay) */
 .hero-list {
-  background-color: #2e1a3f;
+  flex: 0 0 300px;
+  max-width: 300px;
+  overflow-y: auto;
+  background-color: rgba(60, 38, 64, 0.8);
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 0 12px #a15eff;
-  overflow-y: auto;
-  max-height: 100vh;
+  box-shadow: 0 0 8px #7E1469;
 
-  /* Center everything inside */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-/* Remove bullet points and fix list alignment */
+/* Remove bullets, compact list */
 .hero-list ul {
-  list-style: none;   /* No bullets */
-  margin: 0;          /* Reset spacing */
-  padding: 0;         /* Reset spacing */
-  width: 100%;        /* Full width inside the sidebar */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .hero-list li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px;
-  margin: 4px 0;
+  gap: 8px;
+  padding: 6px;
+  margin: 3px 0;
   cursor: pointer;
   border-radius: 4px;
+  color: #f8eaff;
   transition: all 0.2s ease-in-out;
-  text-align: left;   /* Make sure text aligns properly */
-  width: 100%;        /* So hover and active states span fully */
 }
 
-.hero-list h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  color: #e8aaff;
-  text-shadow: 0 0 6px #a15eff;
+.hero-list li:hover {
+  background-color: rgba(126, 20, 105, 0.8);
+}
+
+.hero-list li.active {
+  background-color: #B05BF5;
+  color: #2F1E32;
+  font-weight: bold;
 }
 
 .hero-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 4px;
   object-fit: cover;
 }
 
-.hero-list-header {
-  position: sticky;
-  top: 0;
-  background-color: #2e1a3f;
-  z-index: 5;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border-bottom: 1px solid #a15eff55; /* subtle divider line */
-}
-
-.hero-list-header h2 {
-  text-align: center;
-  margin: 0 0 8px 0;
-  color: #e8aaff;
-  text-shadow: 0 0 6px #a15eff;
-}
-
-.hero-list li.active img {
-  animation: pulseGlow 3s infinite ease-in-out;
-  border-radius: 6px;
-}
-
-.hero-list li.active {
-  background-color: #a15eff;
-  color: #1c1127;
-  font-weight: bold;
-}
-
-/* Right Section layout */
-.right-section {
-  display: grid;
-  grid-template-rows: auto 1fr; /* Top row (Player Search), bottom row (2 cards) */
-  gap: 20px;
-}
-
-/* Search bar styling */
+/* Filters compact for overlay */
 .search-box {
-  width: 80%;  /* Slightly narrower to center */
-  padding: 6px;
+  width: 85%;
+  padding: 5px;
   margin-bottom: 10px;
   border-radius: 4px;
-  border: 1px solid #c184ff;
-  background-color: #1c1127;
-  color: #f1d1ff;
+  border: 1px solid #B05BF5;
+  background-color: #2F1E32;
+  color: #f8eaff;
   text-align: center;
 }
 
 .role-filters {
   display: grid;
-  grid-template-columns: repeat(2, auto); /* Two columns */
-  gap: 8px 30px; /* Space between rows and columns */
-  justify-content: center; /* Center the whole grid */
-  margin-bottom: 15px;
-  color: #f1d1ff;
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  gap: 5px 10px;
+  justify-content: center;
+  margin-bottom: 10px;
   font-size: 0.9rem;
-  text-align: left;
+  color: #f8eaff;
 }
 
 .role-filters label {
@@ -156,141 +128,77 @@ body {
   cursor: pointer;
 }
 
-
 .role-filters input[type="checkbox"] {
-  accent-color: #a15eff;
+  accent-color: #B05BF5;
 }
 
-/* Player Search (top row) */
-.player-section {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #2e1a3f;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 12px #a15eff;
-}
-
-.player-search-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.player-section input {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #c184ff;
-  background-color: #1c1127;
+/* Rank Filter */
+.rank-filter-container {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 0.85rem;
   color: #f1d1ff;
 }
 
-.player-section button {
-  padding: 6px 10px;
+.rank-filter-container select {
+  margin: 5px 0;
+  padding: 5px;
   border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  background-color: #a15eff;
-  color: #1c1127;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  border: 1px solid #B05BF5;
+  background-color: #3C2640;
+  color: #f1d1ff;
 }
 
-.player-section button:hover {
-  background-color: #c184ff;
-}
-
-/* Bottom row: Hero card + Player card */
-.bottom-row {
-  display: flex;
-  gap: 20px;
-  align-items: stretch; /* Make both boxes stretch evenly */
-}
-
-/* Cards: Hero & Player share identical style */
+/* Cards (Hero + Player Info) */
 .hero-details,
 .player-info-wrapper {
-  flex: 1; /* Take equal space */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: #1a0f24;
+  flex: 1;
+  background-color: rgba(60, 38, 64, 0.85);
   border-radius: 8px;
-  box-shadow: 0 0 12px #a15eff;
-  padding: 20px;
-  box-sizing: border-box;
-  min-height: auto; /* Remove hardcoded height */
+  box-shadow: 0 0 10px #B05BF5;
+  padding: 10px;
+  margin-top: 10px;
+  text-align: center;
 }
 
-/* Images (Hero + Player) */
+.right-panel {
+  display: flex;
+  flex-direction: column; /* horizontal layout */
+  flex: 1;
+  gap: 15px;
+}
+
+.player-info-wrapper {
+  flex: 0 0 350px; /* fixed width for player info panel */
+  background-color: rgba(60, 38, 64, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 0 10px #B05BF5;
+  padding: 10px;
+}
+
+/* .hero-details { */
+  /* flex: 1; fill remaining space */
+  /* background-color: rgba(60, 38, 64, 0.85); */
+  /* border-radius: 8px; */
+  /* box-shadow: 0 0 10px #B05BF5; */
+  /* padding: 10px; */
+/* } */
+
+/* Dividers */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #B05BF5;
+  margin: 10px 0;
+  border: none;
+}
+
+/* Adjust images for compact mode */
 .hero-large,
 .player-info-wrapper img {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
-  animation: pulseGlow 3s infinite ease-in-out;
-  margin-bottom: 20px;
-}
-
-.hero-details hr {
-  border: none;
-  border-top: 1px solid #a15eff55; /* Soft purple line */
-  margin: 10px 0 15px 0; /* Some spacing around */
-  width: 80%; /* Make it shorter for style */
-}
-
-.divider {
-  width: 100%; /* Force it to span the card */
-  height: 1px;
-  background-color: #a15eff55; /* Soft purple line */
-  border: none;
-  margin: 15px 0;
-  display: block;
-}
-
-/* Titles */
-.hero-details h2,
-.player-info-wrapper h3 {
-  font-size: 1.6rem;
-  color: #e8aaff;
-  font-weight: bold;
-  text-shadow: 0 0 6px #a15eff;
+  border-radius: 6px;
   margin-bottom: 10px;
-}
-
-/* Glow animation */
-@keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 10px #a15eff, 0 0 20px #a15eff;
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 25px #e8aaff, 0 0 45px #a15eff;
-    transform: scale(1.05);
-  }
-  100% {
-    box-shadow: 0 0 10px #a15eff, 0 0 20px #a15eff;
-    transform: scale(1);
-  }
-}
-
-/* Player Stats Section */
-.player-hero-stats {
-  width: 100%;
-  text-align: center;
-  margin-top: auto;
-  padding-top: 20px;
-  border-top: 1px solid #a15eff55;
-  color: #f1d1ff;
-}
-
-.player-hero-stats h4 {
-  color: #e8aaff;
-  margin-bottom: 12px;
-  text-shadow: 0 0 6px #a15eff;
-  font-size: 1.2em;
 }

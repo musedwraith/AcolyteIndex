@@ -25,10 +25,19 @@ Acolyte Index is a React-based Dota 2 hero tracker designed with a dark, etherea
    ```
 
 ## File Structure
-- **src/App.js** – Main application logic; fetches data and renders UI.
-- **src/AppStyles.css** – Custom purple/pink theme styles.
-- **src/index.js** – React entry point that renders App.
 - **public/index.html** – Root HTML file for React mounting.
+- **scr/componets/HeroList.js** - Scrollable list of Dota 2 heroes with filter/search.
+- **scr/componets/HeroDetails.js** - Stats and protrait display for selected hero.
+- **scr/componets/PlayerLookup.js** - Steam32 ID search and stats.
+- **scr/componets/RoleFilters.js** - Role-based checkbox filters.
+- **scr/componets/RankFilter.js** - Dropdown filter for ranks.
+- **src/App.js** – Main application logic; fetches data and renders UI.
+- **src/AppStyles.css** – Custom purple/pink theme styles; glowing and responsive.
+- **src/index.js** – React entry point that renders App.
+- **electron/main.js** - Electron main process (creates transparent window).
+- **electron/preload.js** - Optional preload scripts for contextBridge.
+- **package.json** - Project mainfest with Electron and React.
+- **README.md** - Project documentation
 
 ## Current Functionality
 1. Browse Dota 2 heroes, display stat information on the hero based on the patch, and search for a player's public Dota 2 stats for that hero.

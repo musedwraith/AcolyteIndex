@@ -39,13 +39,13 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 - **package.json** - Project mainfest with Electron and React.
 - **README.md** - Project documentation
 
-[ hero-list ]    [ player search input           ]
-                 [===============================]
-                 [ hero details | player details ]
+[ hero-list ]----[ player search input           ]
+-----------------[===============================]
+-----------------[ hero details | player details ]
 
-[ left panel ]   [ right top panel                                ]
-                 [================================================]
-                 [ right left-most panel | right right-most panel ]
+[ left panel ]---[ right top panel                                ]
+-----------------[================================================]
+-----------------[ right left-most panel | right right-most panel ]
 
 
 ## Current Functionality

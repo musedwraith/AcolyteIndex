@@ -138,8 +138,8 @@ export default function App() {
   const fetchPatchHeroStats = async (playerId, heroId) => {
     try {
       const matchesRes = await fetch(
-        `https://api.opendota.com/api/players/${playerId}/matches?hero_id=${heroId}`
-      );
+      `https://api.opendota.com/api/players/${playerId}/matches?hero_id=${heroId}&significant=0`
+    );
       const matches = await matchesRes.json();
 
       if (!matches.length) {

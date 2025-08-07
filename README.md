@@ -47,6 +47,14 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 -----------------[================================================]
 -----------------[ right left-most panel | right right-most panel ]
 
+TO-DO:
+[ hero list ]----[ player search input           ]
+---------------------------------------------------
+[ hero details---| player details         ]
+-----------------|  - All-time Hero Stats
+-----------------|  - Patch Stats
+-----------------|  - Recent Matches
+
 
 ## Current Functionality
 1. Browse Dota 2 heroes, display stat information on the hero based on the patch, and search for a player's public Dota 2 stats for that hero.
@@ -61,11 +69,12 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 - Deploy for live sharing. (Netlify?)
 - Implement **“Mark for Ritual” tracking** so users can mark heroes they’re practicing and add personal notes.
 - Add meta data: builds, counters.
-- Meta teir list based on OpenDota win rates for each patch.
-- Track my own Dota matches (so I can see how bad I actually play xd).
+- Meta tier list based on OpenDota win rates for each patch.
+- Track my own Dota matches (so I can see how bad I actually play xd) - match history
 - Add a streamer overlay to show the pool live.
+- Add to Twitch
+- Add to Discord?
 - Build paths, starting items, early game and core items, talents, neutral items, and situational item suggestions, overlay OverWolf DotaPlus app
 - Recordings like OverWolf Outplayed
 - Keys to open and hide the overlay
-- Correct the player's current patch information
 - Correct the positioning of the hero and player panels

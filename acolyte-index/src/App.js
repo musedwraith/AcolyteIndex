@@ -136,34 +136,45 @@ export default function App() {
   };
 
   const fetchPatchHeroStats = async (playerId, heroId) => {
-    try {
-      const matchesRes = await fetch(
-      `https://api.opendota.com/api/players/${playerId}/matches?hero_id=${heroId}&significant=0`
+  try {
+    // Step 1: Get patch data and find the latest one
+    const patchRes = await fetch("https://api.opendota.com/api/constants/patch");
+    const patchData = await patchRes.json();
+    const patches = Object.values(patchData);
+    const latestPatch = patches[patches.length - 1];
+    const patchStartDate = new Date(latestPatch.date).getTime() / 1000; // to UNIX timestamp
+
+    // Step 2: Fetch player matches with this hero (limited to 100 most recent)
+    const matchesRes = await fetch(
+      `https://api.opendota.com/api/players/${playerId}/matches?hero_id=${heroId}&significant=0&limit=100`
     );
-      const matches = await matchesRes.json();
+    const matches = await matchesRes.json();
 
-      if (!matches.length) {
-        setPatchHeroStats(null);
-        return;
-      }
+    // Step 3: Filter matches that occurred after the patch start
+    const filteredMatches = matches.filter((match) => match.start_time > patchStartDate);
 
-      const wins = matches.filter((m) =>
-        m.player_slot < 128 ? m.radiant_win : !m.radiant_win
-      ).length;
-      const losses = matches.length - wins;
-      const winRate = ((wins / matches.length) * 100).toFixed(2);
-
-      setPatchHeroStats({
-        games: matches.length,
-        wins,
-        losses,
-        winRate,
-      });
-    } catch (error) {
-      console.error("Failed to fetch patch hero stats:", error);
+    if (!filteredMatches.length) {
       setPatchHeroStats(null);
+      return;
     }
-  };
+
+    const wins = filteredMatches.filter((m) =>
+      m.player_slot < 128 ? m.radiant_win : !m.radiant_win
+    ).length;
+    const losses = filteredMatches.length - wins;
+    const winRate = ((wins / filteredMatches.length) * 100).toFixed(2);
+
+    setPatchHeroStats({
+      games: filteredMatches.length,
+      wins,
+      losses,
+      winRate,
+    });
+  } catch (error) {
+    console.error("Failed to fetch patch hero stats:", error);
+    setPatchHeroStats(null);
+  }
+};
 
   return (
     <div className="app-wrapper">

@@ -10,13 +10,11 @@ export default function App() {
   const [playerData, setPlayerData] = useState(null);
   const [playerLoading, setPlayerLoading] = useState(false);
   const [patchHeroStats, setPatchHeroStats] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedRank, setSelectedRank] = useState("");
 
-  // Map of rank names to OpenDota API fields
-  const rankBrackets = {
+  const rankBrackets = useMemo(() => ({
     Herald: 1,
     Guardian: 2,
     Crusader: 3,
@@ -25,9 +23,8 @@ export default function App() {
     Ancient: 6,
     Divine: 7,
     Immortal: 8,
-  };
+  }), []) ;
 
-  // Fetch heroes and patch info
   useEffect(() => {
     fetch("https://api.opendota.com/api/heroStats")
       .then((res) => res.json())
@@ -57,7 +54,6 @@ export default function App() {
     setSelectedRank(e.target.value);
   };
 
-  // Filter + sort heroes (search, role, rank popularity)
   const filteredHeroes = useMemo(() => {
     return heroes
       .filter((hero) => {
@@ -82,7 +78,7 @@ export default function App() {
         const key = `${rankBrackets[selectedRank]}_pick`;
         return (b[key] || 0) - (a[key] || 0);
       });
-  }, [heroes, searchTerm, selectedRoles, selectedRank]);
+  }, [heroes, searchTerm, selectedRoles, selectedRank, rankBrackets]);
 
   const fetchHeroStats = async (heroId) => {
     setLoading(true);
@@ -171,14 +167,12 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      <div className="app-drag-bar" />
       <div className="app-title">Acolyte Index</div>
-
       <div className="page-container">
-        {/* Left Sidebar */}
+        {/* Left - Hero List */}
         <div className="hero-list">
           <h2>Heroes</h2>
-
-          {/* Search */}
           <input
             type="text"
             className="search-box"
@@ -186,8 +180,6 @@ export default function App() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
-          {/* Role Filters */}
           <div className="role-filters">
             {["Carry", "Support", "Durable", "Disabler", "Initiator", "Nuker", "Escape", "Pusher"].map(
               (role) => (
@@ -202,8 +194,6 @@ export default function App() {
               )
             )}
           </div>
-
-          {/* Rank Filter */}
           <div className="rank-filter-container">
             <strong>Rank Filter</strong>
             <select
@@ -220,21 +210,16 @@ export default function App() {
               Sorted by pick rate (most picked first).
             </div>
           </div>
-
-          {/* Hero List */}
           <ul>
             {filteredHeroes.map((hero) => {
               const heroName = hero.name.replace("npc_dota_hero_", "");
               const imgUrl = `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${heroName}.png`;
 
-              // Calculate pick rate as % for selected rank
               let pickRateText = "";
               if (selectedRank) {
                 const pickKey = `${rankBrackets[selectedRank]}_pick`;
-                const totalKey = `${rankBrackets[selectedRank]}_pick`; // OpenDota heroStats doesn't give total per rank, so this is just raw
                 const totalPicks = heroes.reduce((sum, h) => sum + (h[pickKey] || 0), 0);
-                const rate =
-                  totalPicks > 0 ? ((hero[pickKey] || 0) / totalPicks) * 100 : 0;
+                const rate = totalPicks > 0 ? ((hero[pickKey] || 0) / totalPicks) * 100 : 0;
                 pickRateText = ` — ${rate.toFixed(1)}% Pick Rate`;
               }
 
@@ -269,7 +254,6 @@ export default function App() {
           </div>
 
           <div className="bottom-row">
-            {/* Hero Details */}
             <div className="hero-details">
               {loading && <p>Consulting the Ancients...</p>}
               {!loading && selectedHero && (
@@ -285,35 +269,23 @@ export default function App() {
                   <h2>{selectedHero.localized_name}</h2>
                   <small>Stats from Pro Matches (Patch {currentPatch || "Loading..."})</small>
                   <p>Roles: {selectedHero.roles?.join(", ")}</p>
-
                   <hr className="divider" />
-
-                  <p>
-                    Win Rate:{" "}
-                    {(
-                      (selectedHero.pro_win / selectedHero.pro_pick) * 100 || 0
-                    ).toFixed(2)}%
-                  </p>
+                  <p>Win Rate: {((selectedHero.pro_win / selectedHero.pro_pick) * 100 || 0).toFixed(2)}%</p>
                   <p>Pro Pick Count: {selectedHero.pro_pick || 0}</p>
                   <p>Pro Ban Count: {selectedHero.pro_ban || 0}</p>
-                  <p>
-                    KDA (Patch Avg):{" "}
-                    {selectedHero.kda ? selectedHero.kda.toFixed(2) : "N/A"}
-                  </p>
+                  <p>KDA (Patch Avg): {selectedHero.kda ? selectedHero.kda.toFixed(2) : "N/A"}</p>
                   <p>Move Speed: {selectedHero.move_speed}</p>
                 </>
               )}
               {!loading && !selectedHero && <p>Select a hero to see details.</p>}
             </div>
 
-            {/* Player Info */}
             <div className="player-info-wrapper">
               {playerData && (
                 <>
                   <img src={playerData.profile?.avatarfull} alt="Player Avatar" />
                   <h3>{playerData.profile?.personaname || "Unknown Player"}</h3>
                   <p>MMR Estimate: {playerData.mmr_estimate?.estimate || "N/A"}</p>
-
                   {selectedHero && playerData.heroes && (
                     <div className="player-hero-stats">
                       {(() => {
@@ -322,18 +294,13 @@ export default function App() {
                         );
                         if (!heroStats) {
                           return (
-                            <p>
-                              {playerData.profile?.personaname} has no games on{" "}
-                              {selectedHero.localized_name}.
-                            </p>
+                            <p>{playerData.profile?.personaname} has no games on {selectedHero.localized_name}.</p>
                           );
                         }
                         const winrate = ((heroStats.win / heroStats.games) * 100).toFixed(2);
                         return (
                           <>
-                            <h4>
-                              {playerData.profile?.personaname}'s {selectedHero.localized_name} Stats
-                            </h4>
+                            <h4>{playerData.profile?.personaname}'s {selectedHero.localized_name} Stats</h4>
                             <div className="stats-section">
                               <h5>All-Time:</h5>
                               <p>Games: {heroStats.games}</p>
@@ -341,9 +308,7 @@ export default function App() {
                               <p>Losses: {heroStats.games - heroStats.win}</p>
                               <p>Win Rate: {winrate}%</p>
                             </div>
-
                             <hr className="divider" />
-
                             {patchHeroStats ? (
                               <div className="stats-section">
                                 <h5>Patch {currentPatch || "Latest"}:</h5>

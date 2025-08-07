@@ -39,6 +39,15 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 - **package.json** - Project mainfest with Electron and React.
 - **README.md** - Project documentation
 
+[ hero-list ]    [ player search input           ]
+                 [===============================]
+                 [ hero details | player details ]
+
+[ left panel ]   [ right top panel                                ]
+                 [================================================]
+                 [ right left-most panel | right right-most panel ]
+
+
 ## Current Functionality
 1. Browse Dota 2 heroes, display stat information on the hero based on the patch, and search for a player's public Dota 2 stats for that hero.
 2. The left panel displays hero names in alphabetical order in a scrollable list, a larger hero portrait, role list, pro-level stats (win rate, pick count, ban count), and a dynamic KDA based on patch information. For KDA, it uses a basic formula to approximate a dynamic KDA number since OpenDota doesn't provide direct kills/deaths. Heroes can be filtered by selecting their role or using a search box to type in their name.
@@ -46,6 +55,7 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 4. The left most of the right panel dynamically populates with the hero information: the hero portrait, the hero name, hero roles, which patch the information was obtained from, their win rate, pro pick count, pro ban count, KDA based on the patch, and movement speed.
 5. The right most of the right panel populates with the player information after searching using the player serach box. It displays the player's portrait, the player's name, MMR estimate, all time stats of: number of games, number of wins, number of losses, and win rate, the patch stats of: games, wins, losses, and winrate.
 6. Run a transparent, always-on-top Electron overlay with a glowing UI styled to match the "wraith" branding. Which includes glowing and pulsing effects for hero and player cards.
+7. Top bar is able to be dragged to easily move the transparent window.
 
 ## Future Enhancements
 - Deploy for live sharing. (Netlify?)

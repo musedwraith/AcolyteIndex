@@ -1,20 +1,18 @@
-/* Make the entire window transparent for Electron overlay */
+
+/* Reset and base styles */
 html, body, #root {
   background-color: transparent !important;
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  color: #f8eaff; /* Default text color */
+  color: #f8eaff;
   font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Floating overlay wrapper */
+/* App container */
 .app-wrapper {
-  background-color: rgba(47, 30, 50, 0.92); /* Slight transparency */
+  background-color: rgba(47, 30, 50, 0.92);
   border-radius: 12px;
   padding: 15px;
   width: 100%;
@@ -22,12 +20,10 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 25px rgba(176, 91, 245, 0.6);
-  /* overflow: hidden; */
 }
 
-/* Title (kept small for overlay) */
+/* App title */
 .app-title {
-  position: relative;
   text-align: center;
   color: #B05BF5;
   font-size: 1.8em;
@@ -36,17 +32,16 @@ html, body, #root {
   margin-bottom: 10px;
 }
 
-/* Stack layout for hero list + right panel */
+/* Main layout */
 .page-container {
   display: flex;
   flex-direction: row;
   gap: 15px;
-  padding: 0;
-  height: 100%;
+  flex: 1;
   overflow: hidden;
 }
 
-/* Hero List (compact for overlay) */
+/* Left hero list panel */
 .hero-list {
   flex: 0 0 300px;
   max-width: 300px;
@@ -55,14 +50,12 @@ html, body, #root {
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 0 8px #7E1469;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
 }
 
-/* Remove bullets, compact list */
+/* Hero list content */
 .hero-list ul {
   list-style: none;
   margin: 0;
@@ -99,7 +92,7 @@ html, body, #root {
   object-fit: cover;
 }
 
-/* Filters compact for overlay */
+/* Search box */
 .search-box {
   width: 85%;
   padding: 5px;
@@ -111,9 +104,10 @@ html, body, #root {
   text-align: center;
 }
 
+/* Filters */
 .role-filters {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: 5px 10px;
   justify-content: center;
   margin-bottom: 10px;
@@ -132,7 +126,6 @@ html, body, #root {
   accent-color: #B05BF5;
 }
 
-/* Rank Filter */
 .rank-filter-container {
   text-align: center;
   margin: 10px 0;
@@ -149,42 +142,87 @@ html, body, #root {
   color: #f1d1ff;
 }
 
-/* Cards (Hero + Player Info) */
-.hero-details,
-.player-info-wrapper {
+/* Right section layout */
+.right-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Player lookup */
+.player-section {
   background-color: rgba(60, 38, 64, 0.85);
   border-radius: 8px;
   box-shadow: 0 0 10px #B05BF5;
   padding: 10px;
-  margin-top: 10px;
   text-align: center;
 }
 
-.right-panel {
+.player-search-group {
   display: flex;
-  flex-direction: column; /* horizontal layout */
-  flex: 1;
-  gap: 15px;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 5px;
 }
 
-.player-info-wrapper {
-  flex: 0 0 350px; /* fixed width for player info panel */
+.player-search-group input {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #B05BF5;
+  background-color: #2F1E32;
+  color: #f8eaff;
+  width: 200px;
+}
+
+.player-search-group button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #B05BF5;
+  color: #2F1E32;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Bottom row split hero/player info */
+.bottom-row {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+}
+
+/* Hero info card */
+.hero-details {
+  flex: 1;
   background-color: rgba(60, 38, 64, 0.85);
   border-radius: 8px;
   box-shadow: 0 0 10px #B05BF5;
   padding: 10px;
+  text-align: center;
 }
 
-/* .hero-details { */
-  /* flex: 1; fill remaining space */
-  /* background-color: rgba(60, 38, 64, 0.85); */
-  /* border-radius: 8px; */
-  /* box-shadow: 0 0 10px #B05BF5; */
-  /* padding: 10px; */
-/* } */
+/* Player info card */
+.player-info-wrapper {
+  flex: 1;
+  background-color: rgba(60, 38, 64, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 0 10px #B05BF5;
+  padding: 10px;
+  text-align: center;
+}
 
-/* Dividers */
+/* Shared image style */
+.hero-large,
+.player-info-wrapper img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* Divider */
 .divider {
   width: 100%;
   height: 1px;
@@ -193,12 +231,19 @@ html, body, #root {
   border: none;
 }
 
-/* Adjust images for compact mode */
-.hero-large,
-.player-info-wrapper img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 10px;
+/* Stats sections */
+.stats-section {
+  margin-top: 10px;
+}
+
+/* Draggable top bar for Electron */
+.app-drag-bar {
+  height: 24px;
+  width: 100%;
+  -webkit-app-region: drag;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+/*  background-color: rgba(255, 0, 0, 0.3); DEBUG */
 }

@@ -75,7 +75,7 @@ TO-DO:
 
 ## Future Enhancements
 - Deploy for live sharing. (Netlify?)
-- Implement **“Mark for Ritual” tracking** so users can mark heroes they’re practicing and add personal notes.
+- Implement **“Mark for Ritual” tracking** so users can mark heroes they’re practicing and add personal notes. This is the reason I started making this app - still haven't added it yet.
 - Add meta data: builds, counters.
 - Meta tier list based on OpenDota win rates for each patch.
 - Track my own Dota matches (so I can see how bad I actually play xd) - match history
@@ -84,5 +84,5 @@ TO-DO:
 - Add to Discord?
 - Build paths, starting items, early game and core items, talents, neutral items, and situational item suggestions, overlay OverWolf DotaPlus app
 - Recordings like OverWolf Outplayed
-- Keys to open and hide the overlay
+- Bind keys to open and hide the overlay
 - Correct the positioning of the hero and player panels

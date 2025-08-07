@@ -45,18 +45,21 @@ Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed wi
 .................[ hero details | player details ]
 ```
 
+```
 [ left panel ]---[ right top panel                                ]
 -----------------[================================================]
 -----------------[ right left-most panel | right right-most panel ]
+```
 
 TO-DO:
+```
 [ hero list ]----[ player search input           ]
 ---------------------------------------------------
 [ hero details---| player details         ]
 -----------------|  - All-time Hero Stats
 -----------------|  - Patch Stats
 -----------------|  - Recent Matches
-
+```
 
 ## Current Functionality
 1. Browse Dota 2 heroes, display stat information on the hero based on the patch, and search for a player's public Dota 2 stats for that hero.

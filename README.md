@@ -1,5 +1,5 @@
 ## Overview
-Acolyte Index is a React-based Dota 2 hero tracker designed with a dark, ethereal "wraith" theme. It allows you to browse the Dota 2 hero pool, fetch live stats via the OpenDota API, and display essential data for each hero such as roles, win rates, pro pick rates, and move speeds.
+Acolyte Index is a React-based, Electron-wrapped Dota 2 hero tracker designed with a moody, glowding "wraith" theme. It allows you to launch a transparent overlay, browse the Dota 2 hero pool, fetch live stats via the OpenDota API, display essential data for each hero such as roles, win rates, pro pick rates, a calculated KDA, and move speeds, fetch live player stats via a STEAM32 ID, and display essential player data for each selected hero.
 
 ## Project Setup
 1. Clone the repository:
